@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  postgres:
+      image: postgres:17
+      container_name: db
+      environment:
+        POSTGRES_USER: admin
+        POSTGRES_PASSWORD: admin
+        POSTGRES_DB: main_db
+      networks:
+        - flask-app-network
+      ports:
+        - "5433:5432"
+      restart: always
+
+  api:
+      container_name: api
+      build: .
+      command: python create_app.py
+      volumes:
+        - .:/app
+      ports:
+        - "5000:5000"
+      depends_on:
+      - postgres
+      networks:
+      - flask-app-network
+
+networks:
+  flask-app-network:
+    driver: bridge
