@@ -1,22 +1,16 @@
-import os
-
-from dotenv import load_dotenv
 from flask_migrate import Migrate
 from flask import Flask
 
 from app.models import db
 from app.routes import users_bp
 from app.erros import register_error_handlers
+from config import Config
 
 
-load_dotenv()
-
-
-def create_app():
+def create_app(config: Config):
     app = Flask(__name__)
-    # Config
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('POSTGRES_URI')
-
+    # Load onfig
+    app.config.from_object(config)
     # Registrate blueprint
     app.register_blueprint(users_bp, url_prefix='/users')
 

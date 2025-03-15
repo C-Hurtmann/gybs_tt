@@ -1,3 +1,4 @@
+from typing import Any
 from flask_marshmallow import Marshmallow
 from marshmallow import pre_load, fields
 
@@ -26,7 +27,7 @@ class UserCreateUpdateSchema(UserSchema):
         fields = ('name', 'email')
 
     @pre_load
-    def preproccess_data(self, data: dict):
+    def preproccess_data(self, data: dict, **kwargs: Any):
         if 'name' in data and isinstance(data['name'], str):
             data['name'] = data['name'].title()
         return data
